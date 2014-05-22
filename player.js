@@ -15,6 +15,7 @@ function Player(ctx, sx, sy)
 	var maxXV = 0.3;
 	var oneway_immune = 0;
 	var immune_time = 200;
+	var may_jump = true;
 	
 	this.update = function(dtime, map)
 	{
@@ -69,15 +70,18 @@ function Player(ctx, sx, sy)
 				else
 					self.falling = true;
 				
-				if (!self.falling && 87 in keysDown)
+				if (!self.falling && 87 in keysDown && may_jump)
 				{
 					self.velocity.Y = jump;
 					self.falling = true;
+					may_jump = false;
 				}
 				if (self.falling && !(87 in keysDown) && self.velocity.Y < 0)
 				{
 					self.velocity.Y = 0;
 				}
+				if (!(87 in keysDown) && !self.falling)
+					may_jump = true;
 				if (self.falling && map.mapdata[head.X][head.Y] == LAND && self.velocity.Y < 0)
 				{
 					self.velocity.Y = 0;

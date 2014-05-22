@@ -7,6 +7,14 @@ var onmove = function(e)
 	mouseX = e.clientX - 10;
 	mouseY = e.clientY - 10;
 }
+function leftClick()
+{
+
+}
+function rightClick()
+{
+}
+
 
 var map;
 var player;
@@ -18,8 +26,6 @@ function gameloop()
 	ctx.fillRect(0,0, canvas.width, canvas.height);
 	
 	player.update(dtime, map);
-	
-	console.log(keysDown);
 	
 	map.draw(player.position);
 	player.draw();
