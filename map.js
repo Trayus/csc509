@@ -1,4 +1,4 @@
-var EMPTY = 0, LAND = 1, ONEWAY = 2, GRAPPLE = 3, BOX = 4, KILL = 5;
+var EMPTY = 0, LAND = 1, ONEWAY = 2, GRAPPLE = 3, BOX = 4, KILL = 5, VICTORY = 6;
 
 function Map(ctx, construct)
 {
@@ -40,6 +40,7 @@ function Map(ctx, construct)
 					case GRAPPLE: ctx.fillStyle = '#00A'; break;
 					case BOX: ctx.fillStyle = '#842'; break;
 					case KILL: ctx.fillStyle = '#F00'; break;
+					case VICTORY: ctx.fillStyle = '#FF8'; break;
 				}
 				if (self.mapdata[i][j] != EMPTY)
 				{
@@ -94,6 +95,7 @@ function LevelOne(mapdata)
 	{
 		mapdata[30][i] = LAND;
 	}
+	mapdata[38][23] = VICTORY;
 	
 	return new Vector2().init(2, 2);
 }

@@ -24,6 +24,20 @@ function gameloop()
 	map.draw(player.position);
 	player.draw();
 	
+	ctx.font="20px Courier";
+	ctx.fillStyle="#FFF";
+	ctx.fillText("Time: " + (player.time / 1000).toFixed(2) + "s",10,20);
+	if (!player.alive)
+	{
+		ctx.fillStyle="#F00";
+		ctx.fillText("Dead. Press R to restart.",10,50);
+	}
+	if (player.win)
+	{
+		ctx.fillStyle="#FF8";
+		ctx.fillText("Victory!",10,80);
+	}
+	
 	assertAll();
 }
 
