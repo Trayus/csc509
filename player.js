@@ -8,6 +8,11 @@ function Player(ctx, sx, sy)
 	this.alive = true;
 	this.win = false;
 	this.time = 0;
+	this.rough_aim = new Vector2();
+	this.snap_aim = new Vector2();
+	this.charging = false;
+	this.energy = 0;
+	this.move_resist = 0;
 	var jump = -0.6;
 	var maxV = 1.2;
 	var self = this;
@@ -16,18 +21,32 @@ function Player(ctx, sx, sy)
 	var oneway_immune = 0;
 	var immune_time = 200;
 	var may_jump = true;
+	var charge_r = 40;
 	
 	this.update = function(dtime, map)
 	{
 		if (self.alive && !self.win)
 		{
 			self.time += dtime;
+			self.charging = (32 in keysDown) && self.energy > 0;
+			if (!(32 in keysDown)) 
+				self.energy += 1;
+			if (self.charging)
+				self.energy -= 1;
+			if (self.energy > 100)
+				self.energy = 100;
 			
+			if (self.move_resist != 0)
+				self.move_resist--;
+				
+			// movement and collisions from here onward
 			if (self.falling)
 				self.velocity.Y += gravity * dtime;
 			
-			if (self.velocity.Y > maxV)
+			if (self.velocity.Y > maxV && self.move_resist == 0)
 				self.velocity.Y = maxV;
+			if (self.velocity.Y < -maxV && self.move_resist == 0)
+				self.velocity.Y = -maxV;
 			
 			if (65 in keysDown)
 				self.velocity.X -= acc * dtime;
@@ -39,9 +58,9 @@ function Player(ctx, sx, sy)
 			{
 				self.velocity.X /= 1.2;
 			}
-			if (self.velocity.X > maxXV) 
+			if (self.velocity.X > maxXV && self.move_resist == 0) 
 				self.velocity.X = maxXV;
-			if (self.velocity.X < -maxXV) 
+			if (self.velocity.X < -maxXV && self.move_resist == 0) 
 				self.velocity.X = -maxXV;
 				
 			self.position.X += self.velocity.X * dtime;
@@ -61,7 +80,7 @@ function Player(ctx, sx, sy)
 				left.X >= 0 && left.Y >= 0 && left.X < map.width && left.Y < map.height &&
 				right.X >= 0 && right.Y >= 0 && right.X < map.width && right.Y < map.height)
 			{
-				if (map.mapdata[feet.X][feet.Y] == LAND || (map.mapdata[feet.X][feet.Y] == ONEWAY && self.velocity.Y > 0 && oneway_immune == 0))
+				if (map.mapdata[feet.X][feet.Y] == LAND || map.mapdata[feet.X][feet.Y] == BOX || (map.mapdata[feet.X][feet.Y] == ONEWAY && self.velocity.Y > 0 && oneway_immune == 0))
 				{
 					self.velocity.Y = 0;
 					self.position.Y = feet.Y * map.tile_h - self.image.height;
@@ -70,19 +89,19 @@ function Player(ctx, sx, sy)
 				else
 					self.falling = true;
 				
-				if (!self.falling && 87 in keysDown && may_jump)
+				if (!self.falling && (87 in keysDown) && may_jump)
 				{
 					self.velocity.Y = jump;
 					self.falling = true;
 					may_jump = false;
 				}
-				if (self.falling && !(87 in keysDown) && self.velocity.Y < 0)
+				if (self.falling && !(87 in keysDown) && self.velocity.Y < 0 && self.move_resist == 0)
 				{
 					self.velocity.Y = 0;
 				}
 				if (!(87 in keysDown) && !self.falling)
 					may_jump = true;
-				if (self.falling && map.mapdata[head.X][head.Y] == LAND && self.velocity.Y < 0)
+				if (self.falling && (map.mapdata[head.X][head.Y] == LAND || map.mapdata[head.X][head.Y] == BOX) && self.velocity.Y < 0)
 				{
 					self.velocity.Y = 0;
 				}
@@ -96,16 +115,17 @@ function Player(ctx, sx, sy)
 				oneway_immune -= dtime;
 				if (oneway_immune < 0) oneway_immune = 0;
 				
-				if (map.mapdata[left.X][left.Y] == LAND)
+				if (map.mapdata[left.X][left.Y] == LAND || map.mapdata[left.X][left.Y] == BOX)
 				{
 					self.velocity.X = 0;
 					self.position.X = (left.X + 1) * map.tile_w;
 				}
-				if (map.mapdata[right.X][right.Y] == LAND)
+				if (map.mapdata[right.X][right.Y] == LAND || map.mapdata[right.X][right.Y] == BOX)
 				{
 					self.velocity.X = 0;
 					self.position.X = right.X * map.tile_w - self.image.width;
 				}
+				
 				
 				if (map.mapdata[feet.X][feet.Y] == KILL ||
 					map.mapdata[head.X][head.Y] == KILL ||
@@ -121,21 +141,59 @@ function Player(ctx, sx, sy)
 				{
 					self.win = true;
 				}
+				
+				if (self.charging)
+				{
+					var s1 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 + charge_r) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2) / map.tile_h));
+					var s2 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 - charge_r) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2) / map.tile_h));
+					var s3 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2 + charge_r) / map.tile_h));
+					var s4 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2) / map.tile_w), 
+												   Math.floor((self.position.Y + self.image.height / 2 - charge_r) / map.tile_h));
+												   
+					var s5 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 + charge_r / 2) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2 + charge_r / 2) / map.tile_h));
+					var s6 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 - charge_r / 2) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2 + charge_r / 2) / map.tile_h));
+					var s7 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 + charge_r / 2) / map.tile_w), 
+												  Math.floor((self.position.Y + self.image.height / 2 - charge_r / 2) / map.tile_h));
+					var s8 = new Vector2().init(Math.floor((self.position.X + self.image.width / 2 - charge_r / 2) / map.tile_w), 
+												   Math.floor((self.position.Y + self.image.height / 2 - charge_r / 2) / map.tile_h));
+												   
+					if (map.mapdata[s1.X][s1.Y] == BOX) map.mapdata[s1.X][s1.Y] = EMPTY;
+					if (map.mapdata[s2.X][s2.Y] == BOX) map.mapdata[s2.X][s2.Y] = EMPTY;
+					if (map.mapdata[s3.X][s3.Y] == BOX) map.mapdata[s3.X][s3.Y] = EMPTY;
+					if (map.mapdata[s4.X][s4.Y] == BOX) map.mapdata[s4.X][s4.Y] = EMPTY;
+					
+					if (map.mapdata[s5.X][s5.Y] == BOX) map.mapdata[s5.X][s5.Y] = EMPTY;
+					if (map.mapdata[s6.X][s6.Y] == BOX) map.mapdata[s6.X][s6.Y] = EMPTY;
+					if (map.mapdata[s7.X][s7.Y] == BOX) map.mapdata[s7.X][s7.Y] = EMPTY;
+					if (map.mapdata[s8.X][s8.Y] == BOX) map.mapdata[s8.X][s8.Y] = EMPTY;
+				}	
 			}
 		}
 		if (82 in keysDown /* R */)
 		{
-			self.position.X = map.spawnX;
-			self.position.Y = map.spawnY;
-			self.velocity.X = 0;
-			self.velocity.Y = 0;
-			self.alive = true;
-			self.win = false;
+			init();
 		}
+	}
+	
+	this.getCenter = function()
+	{
+		return new Vector2().init(self.position.X + self.image.width / 2, self.position.Y + self.image.height / 2);
 	}
 	
 	this.draw = function()
 	{
-		ctx.drawImage(this.image, player_pos.X, player_pos.Y);
+		ctx.drawImage(self.image, player_pos.X, player_pos.Y);
+		if (self.charging)
+		{
+			ctx.beginPath();
+			ctx.strokeStyle = "#AFF";
+			ctx.arc(player_pos.X + self.image.width / 2, player_pos.Y + self.image.height / 2,charge_r,0,2*Math.PI);
+			ctx.stroke();
+		}
 	}
 }

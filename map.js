@@ -86,6 +86,13 @@ function LevelOne(mapdata)
 		}
 	}
 	
+	for (var i = 15; i < 20; i++)
+	{
+		for (var j = 15; j < 20; j++)
+		{
+			mapdata[i][j] = BOX;
+		}
+	}
 	
 	for (var i = 20; i < 35; i++)
 	{
