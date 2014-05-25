@@ -23,6 +23,8 @@ var yMaxToCheck = Number.MAX_VALUE;
 
 function assertAll(___tags)
 {
+    var failed = new Array();
+    
 	for (___i = 0; ___i < asserts.length; ___i++)
 	{
 		if ((asserts[___i].x >= xMinToCheck && asserts[___i].x <= xMaxToCheck)
@@ -34,6 +36,7 @@ function assertAll(___tags)
 				if (!eval(asserts[___i].code))
 				{
 					console.log("Assert failed: " + asserts[___i].code);
+                    failed.push(asserts[___i]);
 				}
 			}
 			catch (e)
@@ -42,6 +45,8 @@ function assertAll(___tags)
 			}
 		}
 	}
+    
+    return failed;
 }
 
 function readAsserts(text)
