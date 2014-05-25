@@ -37,7 +37,7 @@ function Vector2()
 	}
 }
 
-var player_pos = new Vector2().init(600, 300); // screen pos of the player
+var player_pos = new Vector2().init(600, 285); // screen pos of the player
 var gravity = 0.0011;
 var num_extents = 500;
 
