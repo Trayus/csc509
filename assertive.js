@@ -15,7 +15,11 @@ var ASSERT = function (code, tags, x, y)
 	}
 }
 
-var asserts = new Array(); 
+var asserts = new Array();
+var xMinToCheck = 0;
+var xMaxToCheck = Number.MAX_VALUE;
+var yMinToCheck = 0;
+var yMaxToCheck = Number.MAX_VALUE;
 
 //asserts.push(new ASSERT("mouseX < 400", new Array()));
 //asserts.push(new ASSERT("i != 2 || (images[i].image.src == 'blue.png' || !images[i].active)", new Array("image")));
@@ -24,7 +28,9 @@ function assertAll(___tags)
 {
 	for (___i = 0; ___i < asserts.length; ___i++)
 	{
-		if ((___tags === undefined) || asserts[___i].containsOne(___tags))
+		if ((asserts[___i].x >= xMinToCheck && asserts[___i].x <= xMaxToCheck)
+            && (asserts[___i].y >= yMinToCheck && asserts[___i].y <= yMaxToCheck)
+            && ((___tags === undefined) || asserts[___i].containsOne(___tags)))
 		{
 			try
 			{
@@ -57,4 +63,12 @@ function readAsserts(text)
         
         asserts.push(new ASSERT(cond, t, x, y));
     }
+}
+
+function areaToCheck(xMin, yMin, xMax, yMax)
+{
+    xMinToCheck = xMin;
+    yMinToCheck = yMin;
+    xMaxtoCheck = xMax;
+    yMaxToCheck = yMax;
 }
