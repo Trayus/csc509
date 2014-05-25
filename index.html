@@ -11,9 +11,8 @@
 		
 		<div id="other">
 			<h1 style="color:'#000';">Asserts</h1>
-			<textarea rows=10 id="asserts"> </textarea>
+			<textarea rows=10 id="asserts" oninput="readAsserts(document.getElementById('asserts').value);"> </textarea>
 			<br />
-			<button onclick="readAsserts(document.getElementById('asserts').value);">Update Asserts</button><br />
 			X1: <textarea rows=1 id="x" oninput="areaToCheck();">0</textarea> px<br />
 			Y1: <textarea rows=1 id="y" oninput="areaToCheck();">0</textarea> px<br />
 			X2: <textarea rows=1 id="w" oninput="areaToCheck();">900</textarea> px<br />

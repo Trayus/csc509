@@ -21,9 +21,6 @@ var xMaxToCheck = Number.MAX_VALUE;
 var yMinToCheck = 0;
 var yMaxToCheck = Number.MAX_VALUE;
 
-//asserts.push(new ASSERT("mouseX < 400", new Array()));
-//asserts.push(new ASSERT("i != 2 || (images[i].image.src == 'blue.png' || !images[i].active)", new Array("image")));
-
 function assertAll(___tags)
 {
 	for (___i = 0; ___i < asserts.length; ___i++)
@@ -50,7 +47,8 @@ function assertAll(___tags)
 function readAsserts(text)
 {
     var lines = text.split("\n");
-    
+    asserts = new Array();
+	
     for (i = 0; i < lines.length; i++)
     {
         var a = lines[i];
@@ -66,8 +64,6 @@ function readAsserts(text)
             asserts.push(new ASSERT(cond, t, x, y));
         }
     }
-	
-	console.log('YES');
 }
 
 function areaToCheck()

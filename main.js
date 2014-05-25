@@ -143,7 +143,12 @@ function gameloop()
 			ctx.stroke();
 			ctx.closePath();
 		}
-		assertAll();
+		var failed = assertAll();
+		for (var a = 0; a < failed.length; a++)
+		{
+			ctx.fillStyle = '#F00';
+			ctx.fillText(failed.code, failed.x, failed.y);
+		}
 	}
 }
 
