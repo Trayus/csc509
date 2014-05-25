@@ -82,6 +82,7 @@ function gameloop()
 	}
 	ctx.fillStyle="#AFF";
 	ctx.fillText("Energy: " + (player.energy) + "%",10,140);
+	ctx.fillRect(10,170,player.energy*2,25);
 	
 	assertAll();
 }
