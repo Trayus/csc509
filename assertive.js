@@ -55,13 +55,16 @@ function readAsserts(text)
     {
         var a = lines[i];
         var parts = a.split(";");
-        var cond = parts[0].trim();
-        var t = parts[1].trim().split(" ");
-        var pos = parts[2].trim().split(" ");
-        var x = parseInt(pos[0]); if (isNaN(x)) x = 0;
-        var y = parseInt(pos[1]); if (isNaN(y)) y = 0;
-        
-        asserts.push(new ASSERT(cond, t, x, y));
+        if (parts.length == 3)
+        {
+            var cond = parts[0].trim();
+            var t = parts[1].trim().split(" ");
+            var pos = parts[2].trim().split(" ");
+            var x = parseInt(pos[0]); if (isNaN(x)) x = 0;
+            var y = parseInt(pos[1]); if (isNaN(y)) y = 0;
+            
+            asserts.push(new ASSERT(cond, t, x, y));
+        }
     }
 	
 	console.log('YES');
