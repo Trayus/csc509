@@ -1,0 +1,30 @@
+
+body {
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	background-color:#CCC;
+}
+
+#wrap
+{
+  width: 1280px;
+  text-align:left;
+}
+
+#main
+{
+  width: 1270px;
+  text-align:left;
+  float:left;
+}
+
+#other
+{
+  padding: 25 25 25 25;
+  width: 300px;
+  text-align:left;
+  float:right;
+}
