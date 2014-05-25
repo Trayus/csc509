@@ -52,7 +52,7 @@ function gameloop()
 	{
 		var dir = player.getCenter().vectorTo(grapplePoint).normalize().scale(0.5);
 		player.velocity.X += dir.X;
-		player.velocity.Y += dir.Y;
+		player.velocity.Y += dir.Y / 2;
 		player.move_resist += 2;
 		if (player.getCenter().vectorTo(grapplePoint).length() < 50)
 			grappling = false;
