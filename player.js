@@ -104,6 +104,7 @@ function Player(ctx, sx, sy)
 				if (self.falling && (map.mapdata[head.X][head.Y] == LAND || map.mapdata[head.X][head.Y] == BOX) && self.velocity.Y < 0)
 				{
 					self.velocity.Y = 0;
+					grappling = false;
 				}
 				
 				if (!self.falling && 83 in keysDown)
@@ -119,11 +120,13 @@ function Player(ctx, sx, sy)
 				{
 					self.velocity.X = 0;
 					self.position.X = (left.X + 1) * map.tile_w;
+					grappling = false;
 				}
 				if (map.mapdata[right.X][right.Y] == LAND || map.mapdata[right.X][right.Y] == BOX)
 				{
 					self.velocity.X = 0;
 					self.position.X = right.X * map.tile_w - self.image.width;
+					grappling = false;
 				}
 				
 				

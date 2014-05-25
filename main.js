@@ -32,7 +32,7 @@ function rightClick()
 
 var map;
 var player;
-var dtime = 20;
+var dtime = 10;
 var highscore = -1;
 
 function gameloop()
