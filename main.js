@@ -43,21 +43,24 @@ function gameloop()
 	ctx.fillStyle = '#000000';
 	ctx.fillRect(0,0, canvas.width, canvas.height);
 	
-	player.rough_aim.X = player.position.X + (mouseX - player_pos.X); 
-	player.rough_aim.Y = player.position.Y + (mouseY - player_pos.Y);
-	player.update(dtime, map);
-	updateAllProjectiles(dtime, map);
-	
-	if (grappling && grapplePoint.X != -1 && grapplePoint.Y != -1)
+	var active = !(document.getElementById('asserts') === document.activeElement);
+	if (active)
 	{
-		var dir = player.getCenter().vectorTo(grapplePoint).normalize().scale(0.5);
-		player.velocity.X += dir.X;
-		player.velocity.Y += dir.Y / 2;
-		player.move_resist += 2;
-		if (player.getCenter().vectorTo(grapplePoint).length() < 50)
-			grappling = false;
+		player.rough_aim.X = player.position.X + (mouseX - player_pos.X); 
+		player.rough_aim.Y = player.position.Y + (mouseY - player_pos.Y);
+		player.update(dtime, map);
+		updateAllProjectiles(dtime, map);
+		
+		if (grappling && grapplePoint.X != -1 && grapplePoint.Y != -1)
+		{
+			var dir = player.getCenter().vectorTo(grapplePoint).normalize().scale(0.5);
+			player.velocity.X += dir.X;
+			player.velocity.Y += dir.Y / 2;
+			player.move_resist += 2;
+			if (player.getCenter().vectorTo(grapplePoint).length() < 50)
+				grappling = false;
+		}
 	}
-	
 	map.draw(player.position);
 	player.draw();
 	ctx.strokeStyle ='#088';
@@ -94,51 +97,54 @@ function gameloop()
 		ctx.fillText("Victory!",10,80);
 	}
 	
-	if (!grappling)
-	{
-		var e;
-		for (e = 1; e < num_extents; e++)
-		{
-			var dir = player.getCenter().vectorTo(player.rough_aim).normalize().scale(e);
-			var pos = new Vector2().init(Math.floor((player.getCenter().X + dir.X) / map.tile_w), 
-										 Math.floor((player.getCenter().Y + dir.Y) / map.tile_h));
-			if (pos.X >= 0 && pos.X < map.width && pos.Y >= 0 && pos.Y < map.height &&
-				(map.mapdata[pos.X][pos.Y] == GRAPPLE || map.mapdata[pos.X][pos.Y] == LAND || 
-				 map.mapdata[pos.X][pos.Y] == BOX || map.mapdata[pos.X][pos.Y] == ONEWAY))
-			{
-				grapplePoint.X = (player.getCenter().X + dir.X);
-				grapplePoint.Y = (player.getCenter().Y + dir.Y);
-				break;
-			}
-		}
-		if (e == num_extents)
-		{
-			grapplePoint.X = -1;
-			grapplePoint.Y = -1;
-		}
-	}
-	if (grapplePoint.X != -1 && grapplePoint.Y != -1)
-	{
-		ctx.fillStyle="#FFF";
-		ctx.beginPath();
-		ctx.arc(grapplePoint.X - player.position.X + player_pos.X, grapplePoint.Y - player.position.Y + player_pos.Y,5,0,2*Math.PI);
-		ctx.fill();
-		ctx.closePath();
-	}
-	if (grappling && grapplePoint.X != -1 && grapplePoint.Y != -1)
-	{
-		ctx.strokeStyle="#FFF";
-		ctx.beginPath();
-		ctx.moveTo(player_pos.X + player.image.width / 2, player_pos.Y + player.image.height / 2);
-		ctx.lineTo(grapplePoint.X - player.position.X + player_pos.X, grapplePoint.Y - player.position.Y + player_pos.Y,5,0,2*Math.PI);
-		ctx.stroke();
-		ctx.closePath();
-	}
 	ctx.fillStyle="#AFF";
 	ctx.fillText("Energy: " + (player.energy) + "%",10,140);
 	ctx.fillRect(10,160,player.energy*2,30);
-		
-	assertAll();
+			
+	if (active)
+	{
+		if (!grappling)
+		{
+			var e;
+			for (e = 1; e < num_extents; e++)
+			{
+				var dir = player.getCenter().vectorTo(player.rough_aim).normalize().scale(e);
+				var pos = new Vector2().init(Math.floor((player.getCenter().X + dir.X) / map.tile_w), 
+											 Math.floor((player.getCenter().Y + dir.Y) / map.tile_h));
+				if (pos.X >= 0 && pos.X < map.width && pos.Y >= 0 && pos.Y < map.height &&
+					(map.mapdata[pos.X][pos.Y] == GRAPPLE || map.mapdata[pos.X][pos.Y] == LAND || 
+					 map.mapdata[pos.X][pos.Y] == BOX || map.mapdata[pos.X][pos.Y] == ONEWAY))
+				{
+					grapplePoint.X = (player.getCenter().X + dir.X);
+					grapplePoint.Y = (player.getCenter().Y + dir.Y);
+					break;
+				}
+			}
+			if (e == num_extents)
+			{
+				grapplePoint.X = -1;
+				grapplePoint.Y = -1;
+			}
+		}
+		if (grapplePoint.X != -1 && grapplePoint.Y != -1)
+		{
+			ctx.fillStyle="#FFF";
+			ctx.beginPath();
+			ctx.arc(grapplePoint.X - player.position.X + player_pos.X, grapplePoint.Y - player.position.Y + player_pos.Y,5,0,2*Math.PI);
+			ctx.fill();
+			ctx.closePath();
+		}
+		if (grappling && grapplePoint.X != -1 && grapplePoint.Y != -1)
+		{
+			ctx.strokeStyle="#FFF";
+			ctx.beginPath();
+			ctx.moveTo(player_pos.X + player.image.width / 2, player_pos.Y + player.image.height / 2);
+			ctx.lineTo(grapplePoint.X - player.position.X + player_pos.X, grapplePoint.Y - player.position.Y + player_pos.Y,5,0,2*Math.PI);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		assertAll();
+	}
 }
 
 function init()
