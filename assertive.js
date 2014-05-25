@@ -1,7 +1,9 @@
-var ASSERT = function (code, tags)
+var ASSERT = function (code, tags, x, y)
 {
 	this.code = code;
 	this.tags = tags;
+    this.x = x;
+    this.y = y;
 	this.containsOne = function(tags)
 	{
 		if (this.tags.length == 0) return false;
@@ -39,33 +41,20 @@ function assertAll(___tags)
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
+function readAsserts(text)
+{
+    var lines = text.split("\n");
+    
+    for (i = 0; i < lines.length; i++)
+    {
+        var a = lines[i];
+        var parts = a.split(";");
+        var cond = parts[0].trim();
+        var t = parts[1].trim().split(" ");
+        var pos = parts[2].trim().split(" ");
+        var x = pos[0];
+        var y = pos[1];
+        
+        asserts.push(new ASSERT(cond, t, x, y));
+    }
+}
