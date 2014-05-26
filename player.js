@@ -28,13 +28,11 @@ function Player(ctx, sx, sy)
 		if (self.alive && !self.win)
 		{
 			self.time += dtime;
-			self.charging = (32 in keysDown) && self.energy > 0;
+			self.charging = (32 in keysDown);
 			if (!(32 in keysDown)) 
 				self.energy += 1;
 			if (self.charging)
 				self.energy -= 1;
-			if (self.energy > 100)
-				self.energy = 100;
 			
 			if (self.move_resist != 0)
 				self.move_resist--;
