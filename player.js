@@ -57,13 +57,7 @@ function Player(ctx, sx, sy)
 				(!(68 in keysDown) && self.velocity.X > 0))
 			{
 				self.velocity.X /= 1.2;
-			}
-			/*
-			if (self.velocity.X > maxXV && self.move_resist == 0) 
-				self.velocity.X = maxXV;
-			if (self.velocity.X < -maxXV && self.move_resist == 0) 
-				self.velocity.X = -maxXV;
-			*/	
+			}	
 			self.position.X += self.velocity.X * dtime;
 			self.position.Y += self.velocity.Y * dtime;
 			
