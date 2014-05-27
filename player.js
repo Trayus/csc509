@@ -28,11 +28,13 @@ function Player(ctx, sx, sy)
 		if (self.alive && !self.win)
 		{
 			self.time += dtime;
-			self.charging = (32 in keysDown);
+			self.charging = (32 in keysDown) && self.energy > 0;
 			if (!(32 in keysDown)) 
 				self.energy += 1;
 			if (self.charging)
 				self.energy -= 1;
+            if (self.energy > 100)
+                self.energy = 100;
 			
 			if (self.move_resist != 0)
 				self.move_resist--;
@@ -133,7 +135,7 @@ function Player(ctx, sx, sy)
 					map.mapdata[left.X][left.Y] == KILL ||
 					map.mapdata[right.X][right.Y] == KILL)
 				{
-					self.alive = false;
+					self.win = true;
 				}
 				if (map.mapdata[feet.X][feet.Y] == VICTORY ||
 					map.mapdata[head.X][head.Y] == VICTORY ||
