@@ -25,7 +25,7 @@ function Player(ctx, sx, sy)
 	
 	this.update = function(dtime, map)
 	{
-		if (!self.win)
+		if (!self.win && self.alive)
 		{
 			self.time += dtime;
 			self.charging = (32 in keysDown) && self.energy > 0;
@@ -58,11 +58,12 @@ function Player(ctx, sx, sy)
 			{
 				self.velocity.X /= 1.2;
 			}
+			/*
 			if (self.velocity.X > maxXV && self.move_resist == 0) 
 				self.velocity.X = maxXV;
 			if (self.velocity.X < -maxXV && self.move_resist == 0) 
 				self.velocity.X = -maxXV;
-				
+			*/	
 			self.position.X += self.velocity.X * dtime;
 			self.position.Y += self.velocity.Y * dtime;
 			
