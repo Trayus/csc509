@@ -25,7 +25,7 @@ function Player(ctx, sx, sy)
 	
 	this.update = function(dtime, map)
 	{
-		if (self.alive && !self.win)
+		if (!self.win)
 		{
 			self.time += dtime;
 			self.charging = (32 in keysDown) && self.energy > 0;

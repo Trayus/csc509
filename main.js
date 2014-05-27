@@ -11,7 +11,7 @@ function leftClick()
 {
 	var projspeed = 0.7;
 	var projsize = 5;
-	new Projectile(player.charging? projsize * 3 : projsize, '#FFF', player.getCenter(), player.getCenter().vectorTo(player.rough_aim).normalize().scale(-projspeed + Math.random() * 0.1), true); 
+	new Projectile(player.charging? projsize * 3 : projsize, '#FFF', player.getCenter(), player.getCenter().vectorTo(player.rough_aim).normalize().scale(projspeed + Math.random() * 0.1), true); 
 	if (player.charging)
 	{
 		player.energy -= 20;
