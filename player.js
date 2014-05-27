@@ -135,7 +135,7 @@ function Player(ctx, sx, sy)
 					map.mapdata[left.X][left.Y] == KILL ||
 					map.mapdata[right.X][right.Y] == KILL)
 				{
-					self.win = true;
+					self.alive = false;
 				}
 				if (map.mapdata[feet.X][feet.Y] == VICTORY ||
 					map.mapdata[head.X][head.Y] == VICTORY ||
