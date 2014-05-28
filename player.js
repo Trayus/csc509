@@ -99,7 +99,6 @@ function Player(ctx, sx, sy)
 				}
 				if (self.falling && !(87 in keysDown) && self.velocity.Y < 0 && self.move_resist == 0)
 				{
-					self.velocity.Y = 0;
 				}
 				if (!(87 in keysDown) && !self.falling)
 					may_jump = true;
