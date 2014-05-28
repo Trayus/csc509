@@ -99,9 +99,8 @@ function Player(ctx, sx, sy)
 				}
 				if (self.falling && !(87 in keysDown) && self.velocity.Y < 0 && self.move_resist == 0)
 				{
+                    self.velocity.Y = 0;
 				}
-				if (!(87 in keysDown) && !self.falling)
-					may_jump = true;
 				if (self.falling && (map.mapdata[head.X][head.Y] == LAND || map.mapdata[head.X][head.Y] == BOX) && self.velocity.Y < 0)
 				{
 					self.velocity.Y = 0;
