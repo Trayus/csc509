@@ -47,7 +47,7 @@ var updateAllProjectiles = function(dtime, map)
 			{
 				projectiles.splice(i--,1);
 			}
-			if (map.mapdata[ints.X][ints.Y] == LAND && projectiles[i].friend)
+			if (map.mapdata[ints.X][ints.Y] == BOX && projectiles[i].friend)
 			{
 				map.mapdata[ints.X][ints.Y] = EMPTY;
 				if (projectiles[i].size < 8)
@@ -55,19 +55,19 @@ var updateAllProjectiles = function(dtime, map)
 				else
 				{
 					ints = new Vector2().init(Math.floor((projectiles[i].position.X - projectiles[i].size) / map.tile_w), Math.floor((projectiles[i].position.Y - projectiles[i].size) / map.tile_h));
-					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == LAND)
+					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == BOX)
 						map.mapdata[ints.X][ints.Y] = EMPTY;
 						
 					ints = new Vector2().init(Math.floor((projectiles[i].position.X - projectiles[i].size) / map.tile_w), Math.floor((projectiles[i].position.Y + projectiles[i].size) / map.tile_h));
-					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == LAND)
+					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == BOX)
 						map.mapdata[ints.X][ints.Y] = EMPTY;
 						
 					ints = new Vector2().init(Math.floor((projectiles[i].position.X + projectiles[i].size) / map.tile_w), Math.floor((projectiles[i].position.Y - projectiles[i].size) / map.tile_h));
-					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == LAND)
+					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == BOX)
 						map.mapdata[ints.X][ints.Y] = EMPTY;
 						
 					ints = new Vector2().init(Math.floor((projectiles[i].position.X + projectiles[i].size) / map.tile_w), Math.floor((projectiles[i].position.Y + projectiles[i].size) / map.tile_h));
-					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == LAND)
+					if (ints.X >= 0 && ints.X < map.width && ints.Y >= 0 && ints.Y < map.height && map.mapdata[ints.X][ints.Y] == BOX)
 						map.mapdata[ints.X][ints.Y] = EMPTY;
 					
 				}
