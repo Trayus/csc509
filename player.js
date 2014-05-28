@@ -106,6 +106,10 @@ function Player(ctx, sx, sy)
 					self.velocity.Y = 0;
 					grappling = false;
 				}
+				if (!self.falling)
+				{
+					may_jump = true;
+				}
 				
 				if (!self.falling && 83 in keysDown)
 				{
