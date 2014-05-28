@@ -51,15 +51,22 @@ function Player(ctx, sx, sy)
 			if (65 in keysDown)
 				self.velocity.X -= acc * dtime;
 			if (68 in keysDown)
-				self.velocity.X += acc * dtime;		
+				self.velocity.X += acc * dtime;
+                
 			if ((!(65 in keysDown) && !(68 in keysDown)) ||
 				(!(65 in keysDown) && self.velocity.X < 0) ||
 				(!(68 in keysDown) && self.velocity.X > 0))
 			{
 				self.velocity.X /= 1.2;
-			}	
+			}
+                
 			self.position.X += self.velocity.X * dtime;
 			self.position.Y += self.velocity.Y * dtime;
+            
+            if (self.velocity.X < -maxXV && self.move_resist == 0)
+                self.velocity.X = -maxXV;
+            if (self.velocity.X > maxXV && self.move_resist == 0)
+                self.velocity.X = maxXV;
 			
 			var feet = new Vector2().init(Math.floor((self.position.X + self.image.width / 2) / map.tile_w), 
 										  Math.floor((self.position.Y + self.image.height) / map.tile_h));
